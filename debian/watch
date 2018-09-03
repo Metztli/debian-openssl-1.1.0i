@@ -1,0 +1,2 @@
+version=3
+opts=pgpsigurlmangle=s/$/.asc/ https://www.openssl.org/source/ openssl-(1.1.0.).tar.gz
