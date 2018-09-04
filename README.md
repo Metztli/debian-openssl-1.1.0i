@@ -1,7 +1,7 @@
-Generates OpenSSL 1.1.0i for Linux Debian stretch-backports. 
-It can be installed it over older (2017) openssl 1.1.0f-x for Stretch.
+Generates OpenSSL 1.1.0i for Linux Debian Stretch / stretch-backports. 
+Generated packages can be installed over older (2017) openssl 1.1.0f-x for Stretch.
  
-Once inside the source directory:
+After git clone and once inside the source directory:
 
 ln -s debian/patches
 
