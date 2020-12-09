@@ -1,12 +1,30 @@
 libcrypto.so.1.1 libssl1.1 #MINVER#
+ EC_KEY_decoded_from_explicit_params@OPENSSL_1_1_1h 1.1.1i-1
+ EVP_PKEY_meth_get_digestsign@OPENSSL_1_1_1e 1.1.1i-1
+ EVP_PKEY_meth_get_digestverify@OPENSSL_1_1_1e 1.1.1i-1
+ EVP_PKEY_meth_set_digestsign@OPENSSL_1_1_1e 1.1.1i-1
+ EVP_PKEY_meth_set_digestverify@OPENSSL_1_1_1e 1.1.1i-1
  *@OPENSSL_1_1_0 1.1.0
  *@OPENSSL_1_1_0a 1.1.0a
  *@OPENSSL_1_1_0c 1.1.0c
  *@OPENSSL_1_1_0d 1.1.0d
+ OPENSSL_1_1_1e@OPENSSL_1_1_1e 1.1.1i-1
+ OPENSSL_1_1_1h@OPENSSL_1_1_1h 1.1.1i-1
+ RSA_get0_pss_params@OPENSSL_1_1_1e 1.1.1i-1
+ X509_ALGOR_copy@OPENSSL_1_1_1h 1.1.1i-1
+ X509_REQ_set0_signature@OPENSSL_1_1_1h 1.1.1i-1
+ X509_REQ_set1_signature_algo@OPENSSL_1_1_1h 1.1.1i-1
  *@OPENSSL_1_1_0f 1.1.0f
  *@OPENSSL_1_1_0g 1.1.0g
  *@OPENSSL_1_1_0h 1.1.0h
  *@OPENSSL_1_1_0i 1.1.0i
+ *@OPENSSL_1_1_0j 1.1.0j
+ *@OPENSSL_1_1_1 1.1.1
+ *@OPENSSL_1_1_1b 1.1.1b
+ *@OPENSSL_1_1_1c 1.1.1c
+ *@OPENSSL_1_1_1d 1.1.1d
 libssl.so.1.1 libssl1.1 #MINVER#
  *@OPENSSL_1_1_0 1.1.0
  *@OPENSSL_1_1_0d 1.1.0d
+ *@OPENSSL_1_1_1 1.1.1
+ *@OPENSSL_1_1_1a 1.1.1a

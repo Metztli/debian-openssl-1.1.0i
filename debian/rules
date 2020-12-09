@@ -10,6 +10,9 @@
 # Modified to be a prototype for debmake by Christoph Lameter <clameter@debian.org>
 include /usr/share/dpkg/architecture.mk
 include /usr/share/dpkg/pkg-info.mk
+
+export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
 SHELL=/bin/bash
 
 package=openssl
@@ -32,6 +35,12 @@ ARCHOPTS  = OPT_$(DEB_HOST_ARCH)
 OPTS      = $($(ARCHOPTS))
 WANTED_LIBC_VERSION = 2.3.1-10
 
+ifeq (,$(findstring terse,$(DEB_BUILD_OPTIONS)))
+	TESTSUITE_FLAGS = HARNESS_VERBOSE=yes
+else
+	TESTSUITE_FLAGS =
+endif
+
 ifeq ($(DEB_HOST_ARCH_CPU), amd64)
 	CONFARGS += enable-ec_nistp_64_gcc_128
 endif
@@ -46,11 +55,12 @@ override_dh_auto_configure:
 		mkdir build_$$opt; \
 		cd build_$$opt ; \
 		../Configure shared $(CONFARGS) debian-$(DEB_HOST_ARCH)-$$opt; \
+		perl configdata.pm -d; \
 		cd .. ;\
 	done
-	mkdir build_static; cd build_static; ../Configure no-shared $(CONFARGS) debian-$(DEB_HOST_ARCH)
+	mkdir build_static; cd build_static; ../Configure no-shared $(CONFARGS) debian-$(DEB_HOST_ARCH) ;perl configdata.pm -d
 	# Debian Perl policy 5.1 (Script Magic)
-	mkdir build_shared; cd build_shared; HASHBANGPERL=/usr/bin/perl ../Configure shared $(CONFARGS) debian-$(DEB_HOST_ARCH)
+	mkdir build_shared; cd build_shared; HASHBANGPERL=/usr/bin/perl ../Configure shared $(CONFARGS) debian-$(DEB_HOST_ARCH) ;perl configdata.pm -d
 
 override_dh_auto_build-indep:
 	$(MAKE) -C build_shared all
@@ -74,10 +84,10 @@ else
 	test -z "$(OPTS)" || for opt in $(OPTS); \
 	do \
 		set -xe; \
-		$(MAKE) -C build_$$opt test HARNESS_VERBOSE=yes; \
+		$(MAKE) -C build_$$opt test $(TESTSUITE_FLAGS); \
 	done
-	$(MAKE) -C build_static test HARNESS_VERBOSE=yes
-	$(MAKE) -C build_shared test HARNESS_VERBOSE=yes
+	$(MAKE) -C build_static test $(TESTSUITE_FLAGS)
+	$(MAKE) -C build_shared test $(TESTSUITE_FLAGS)
 endif
 
 override_dh_auto_clean:
@@ -109,6 +119,7 @@ override_dh_auto_install-arch:
 	mv debian/tmp/usr/lib/ssl/{certs,openssl.cnf,private} debian/tmp/etc/ssl/
 	ln -s /etc/ssl/{certs,openssl.cnf,private} debian/tmp/usr/lib/ssl/
 	cp -pf debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/libcrypto.so.* debian/libcrypto1.1-udeb/usr/lib/
+	cp -pf debian/tmp/etc/ssl/openssl.cnf debian/libcrypto1.1-udeb/usr/lib/ssl/openssl.cnf
 	cp -pf debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/libssl.so.* debian/libssl1.1-udeb/usr/lib/
 	cp -auv build_shared/lib*.so* debian/tmp/usr/lib/$(DEB_HOST_MULTIARCH)/
 	for opt in $(OPTS); \

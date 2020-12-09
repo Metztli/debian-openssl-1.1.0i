@@ -3,26 +3,19 @@ Date: Sun, 5 Nov 2017 15:09:09 +0100
 Subject: debian-targets
 
 ---
- Configurations/20-debian.conf | 199 ++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 199 insertions(+)
+ Configurations/20-debian.conf | 192 ++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 192 insertions(+)
  create mode 100644 Configurations/20-debian.conf
 
 diff --git a/Configurations/20-debian.conf b/Configurations/20-debian.conf
 new file mode 100644
-index 000000000000..5c5d28c74d2f
+index 000000000000..71215d94dfc1
 --- /dev/null
 +++ b/Configurations/20-debian.conf
-@@ -0,0 +1,199 @@
-+my $debian_cflags = `dpkg-buildflags --get CFLAGS` . `dpkg-buildflags --get CPPFLAGS` . "-Wa,--noexecstack -Wall";
-+$debian_cflags =~ s/\n/ /g;
-+my $debian_ldflags = `dpkg-buildflags --get LDFLAGS`;
-+$debian_ldflags =~ s/\n/ /g;
-+
-+%targets = (
+@@ -0,0 +1,192 @@
++my %targets = (
 +	"debian" => {
-+		cflags => $debian_cflags,
-+		lflags => add($debian_ldflags, "-pthread"),
-+		shared_ldflag => add($debian_ldflags),
++		cflags => add("-Wa,--noexecstack -Wall"),
 +	},
 +	"debian-alpha" => {
 +		inherit_from => [ "linux-alpha-gcc", "debian" ],
@@ -58,11 +51,11 @@ index 000000000000..5c5d28c74d2f
 +	},
 +	"debian-kfreebsd-amd64" => {
 +		inherit_from => [ "debian-amd64" ],
-+		enable           => [ ],
++		enable		=> [ ],
 +	},
 +	"debian-kfreebsd-i386" => {
 +		inherit_from => [ "debian-i386" ],
-+		enable           => [ ],
++		enable		=> [ ],
 +	},
 +	"debian-hppa" => {
 +		inherit_from => [ "linux-generic32", "debian" ],
